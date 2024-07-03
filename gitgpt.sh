@@ -13,27 +13,26 @@ fi
 # Create .gitignore if it does not exist
 if [[ ! -f "$GITIGNORE" ]]; then
     touch "$GITIGNORE"
-    echo "# GitIgnore File" >> "$GITIGNORE"
+    echo "# GitIgnore File" >>"$GITIGNORE"
 fi
 
 # Check if .env exists and contains API_KEY
 if [[ ! -f "$ENV_FILE" ]]; then
     echo "Please enter your OpenAI API key:"
     read -r API_KEY
-    echo "OPENAI_API_KEY=$API_KEY" > "$ENV_FILE"
-    echo "$ENV_FILE" >> "$GITIGNORE"
+    echo "OPENAI_API_KEY=$API_KEY" >"$ENV_FILE"
+    echo "$ENV_FILE" >>"$GITIGNORE"
     git update-index --skip-worktree "$GITIGNORE" # Update .gitignore to include .env after creating it
 else
     # Check if API_KEY is in .env
     if [[ -z "${OPENAI_API_KEY}" ]]; then
         echo "Please enter your OpenAI API key:"
         read -r API_KEY
-        echo "OPENAI_API_KEY=$API_KEY" >> "$ENV_FILE"
+        echo "OPENAI_API_KEY=$API_KEY" >>"$ENV_FILE"
     fi
 fi
 
 source "$ENV_FILE"
-
 
 # Function to check if the API key is valid (generated partly by Chatgpt)
 function check_api_key() {
