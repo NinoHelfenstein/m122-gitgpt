@@ -6,9 +6,22 @@ API_URL="https://api.openai.com/v1/chat/completions"
 
 # Install jq if it's not already installed
 if ! command -v jq &>/dev/null; then
-  echo "jq not found, installing..."
-  sudo apt-get update
-  sudo apt-get install -y jq
+  echo "Jq not found. Install jq? (Y/n)"
+  read -r response
+  response=${response,,} # Convert to lowercase
+
+  if [[ "$response" == "n" ]] || [[ "$response" == "no" ]]; then
+    echo "Exiting without installing jq."
+    exit 0 
+  elif [[ "$response" == "y" ]] || [[ "$response" == "yes" ]]; then
+    echo "Installing jq..."
+    sudo apt-get update
+    sudo apt-get install -y jq
+    clear
+  else
+    echo "Invalid response. Exiting."
+    exit 1
+  fi
 fi
 
 # Check if the current directory is a git repository
