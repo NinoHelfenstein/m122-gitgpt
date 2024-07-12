@@ -113,10 +113,10 @@ function generate-json {
     '{model: $model, messages: [{role: "system", content: "Generate a commit message."}, {role: "user", content: $prompt}], max_tokens: $max_tokens, temperature: $temperature, top_p: $top_p, frequency_penalty: $frequency_penalty, presence_penalty: $presence_penalty}')
 }
 
-function call-api {
+function call-api () {
   response=$(curl -s "$API_URL" \
     -H "Content-Type: application/json" \
-    -H "Authorization: Bearer $OPENAI_API_KEY" \
+    -H "Authorization: Bearer $1" \
     -d "$json_payload")
 }
 
@@ -130,7 +130,7 @@ function generate_commit_message {
   prompt=$'generate a commit message for those changes:\n'
   prompt+="$diff_output"
   generate-json "$prompt"
-  call-api
+  call-api "$OPENAI_API_KEY"
   # Display commit message
   commit_message=$(echo $response | jq -r '.choices[0].message.content')
   echo -e "Suggested Commit Message: $commit_message"
