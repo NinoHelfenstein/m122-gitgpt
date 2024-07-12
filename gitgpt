@@ -10,7 +10,6 @@ function show_help {
   echo ""
   echo "Commands:"
   echo "  commit         Commit changes"
-  echo "  pull-request   Create a pull request"
   echo "  -a, --api          Access API"
   echo "  -v, --verify       Verify something"
   echo ""
@@ -26,16 +25,9 @@ function show_commit_help {
   echo "  -s, --staged       Commit only staged changes"
 }
 
-# Show help message for pull-request command
-function show_pull_request_help {
-  echo "Usage: gitgpt pull-request"
-  echo ""
-  echo "Create a pull request."
-}
-
 # Write the API key to the .env file
 function change_api_key {
-  echo "OPENAI_API_KEY=$1" >"$ENV_FILE"
+  echo "OPENAI_API_KEY=$1" > "$ENV_FILE"
 }
 
 # Function to check if the API key is valid
@@ -45,7 +37,7 @@ function check_api_key {
   while [[ "$RESPONSE" != "200" ]]; do
     echo "API key is not valid. Please enter a valid OpenAI API key:"
     read -r OPENAI_API_KEY
-    echo "OPENAI_API_KEY=$OPENAI_API_KEY" >"$ENV_FILE"
+    echo "OPENAI_API_KEY=$OPENAI_API_KEY" > "$ENV_FILE"
     RESPONSE=$(curl -s -o /dev/null -I -w "%{http_code}" -H "Authorization: Bearer $OPENAI_API_KEY" "$CHECK_URL")
   done
   echo "API key is valid."
@@ -54,7 +46,7 @@ function check_api_key {
 # Install jq if it's not already installed
 function install-jq {
   if
-    ! command -v jq &>/dev/null
+    ! command -v jq &> /dev/null
   then
     echo "Jq not found. Install jq? (Y/n)"
     read -r response
@@ -113,7 +105,7 @@ function generate-json {
     '{model: $model, messages: [{role: "system", content: "Generate a commit message."}, {role: "user", content: $prompt}], max_tokens: $max_tokens, temperature: $temperature, top_p: $top_p, frequency_penalty: $frequency_penalty, presence_penalty: $presence_penalty}')
 }
 
-function call-api () {
+function call-api() {
   response=$(curl -s "$API_URL" \
     -H "Content-Type: application/json" \
     -H "Authorization: Bearer $1" \
@@ -137,10 +129,6 @@ function generate_commit_message {
 
 }
 
-function generate_pull_request {
-  exit 0
-}
-
 # Check if there are no arguments
 if [[ $# -eq 0 ]]; then
   show_help
@@ -151,65 +139,47 @@ fi
 command=$1
 shift
 case $command in
-commit)
-  case $1 in
-  "")
-    echo "gitgpt commit: Commit changes."
-    generate_commit_message
+  commit)
+    case $1 in
+      "")
+        echo "gitgpt commit: Commit changes."
+        generate_commit_message
+        exit 0
+        ;;
+      --help | -h)
+        show_commit_help
+        exit 0
+        ;;
+      --staged | -s)
+        echo "gitgpt commit --staged: Commit only staged changes."
+        generate_commit_message --staged
+        exit 0
+        ;;
+      *)
+        echo "Unknown option for 'commit': $1"
+        show_commit_help
+        exit 1
+        ;;
+    esac
+    ;;
+  --api | -a)
+    echo "Please enter your OpenAI API key:"
+    read -r API_KEY
+    change_api_key "$API_KEY"
+    exit 0
+    ;;
+  --verify | -v)
+    source "$ENV_FILE"
+    check_api_key "$OPENAI_API_KEY"
     exit 0
     ;;
   --help | -h)
-    show_commit_help
-    exit 0
-    ;;
-  --staged | -s)
-    echo "gitgpt commit --staged: Commit only staged changes."
-    generate_commit_message --staged
+    show_help
     exit 0
     ;;
   *)
-    echo "Unknown option for 'commit': $1"
-    show_commit_help
+    echo "gitgpt: Command not recognized."
+    show_help
     exit 1
     ;;
-  esac
-  ;;
-pull-request)
-  case $1 in
-  "")
-    echo "gitgpt pull-request: Create a pull request."
-    generate_pull_request
-    exit 0
-    ;;
-  --help | -h)
-    show_pull_request_help
-    exit 0
-    ;;
-  *)
-    echo "Unknown option for 'pull-request': $1"
-    show_pull_request_help
-    exit 1
-    ;;
-  esac
-  ;;
---api | -a)
-  echo "Please enter your OpenAI API key:"
-  read -r API_KEY
-  change_api_key "$API_KEY"
-  exit 0
-  ;;
---verify | -v)
-  source "$ENV_FILE"
-  check_api_key "$OPENAI_API_KEY"
-  exit 0
-  ;;
---help | -h)
-  show_help
-  exit 0
-  ;;
-*)
-  echo "gitgpt: Command not recognized."
-  show_help
-  exit 1
-  ;;
 esac
