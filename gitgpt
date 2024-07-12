@@ -11,8 +11,8 @@ function show_help {
   echo "Commands:"
   echo "  commit         Commit changes"
   echo "  pull-request   Create a pull request"
-  echo "  --api          Access API"
-  echo "  --verify       Verify something"
+  echo "  -a, --api          Access API"
+  echo "  -v, --verify       Verify something"
   echo ""
   echo "Run 'gitgpt <command> --help' for more information on a command."
 }
@@ -22,8 +22,8 @@ function show_commit_help {
   echo "Usage: gitgpt commit [options]"
   echo ""
   echo "Options:"
-  echo "  --help, -h     Display this help message"
-  echo "  --staged       Commit only staged changes"
+  echo "  -h, --help     Display this help message"
+  echo "  -s, --staged       Commit only staged changes"
 }
 
 # Show help message for pull-request command
@@ -162,7 +162,7 @@ commit)
     show_commit_help
     exit 0
     ;;
-  --staged)
+  --staged | -s)
     echo "gitgpt commit --staged: Commit only staged changes."
     generate_commit_message --staged
     exit 0
@@ -192,13 +192,13 @@ pull-request)
     ;;
   esac
   ;;
---api)
+--api | -a)
   echo "Please enter your OpenAI API key:"
   read -r API_KEY
   change_api_key "$API_KEY"
   exit 0
   ;;
---verify)
+--verify | -v)
   source "$ENV_FILE"
   check_api_key "$OPENAI_API_KEY"
   exit 0
