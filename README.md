@@ -98,10 +98,13 @@ This project is about a bash script to help with git. The initial idea for this 
    ```
 4. Add the script to your path
    ```sh
-   echo "export PATH="$HOME/bin/gitgpt:$PATH" >> $HOME/.bashrc
+   echo 'export PATH="$HOME/bin/gitgpt:$PATH"' >> "$HOME/.bashrc"
    ```
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+5. Reload your bashrc
+   ```sh
+   source $HOME/.bashrc
+   ```
+   <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- USAGE EXAMPLES -->
 
