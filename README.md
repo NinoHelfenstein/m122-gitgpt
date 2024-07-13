@@ -1,5 +1,8 @@
 # Git-GPT
 
+<p align="left">
+  <img width="150" height="150" src="gitgpt.png">
+</p>
 This is a project for the module 122 which helps with generating git commit and git pull requests messages. It uses the model from OpenAI.
 
 ## Contribute
