@@ -84,6 +84,7 @@ function check_env_file {
   else
     # Check if API_KEY is in .env
     # shellcheck source=$HOME/bin/gitgpt/.env
+    # shellcheck disable=SC1091
     source "$ENV_FILE"
     if [[ -z "${OPENAI_API_KEY}" ]]; then
       echo "Please enter your OpenAI API key:"
@@ -118,6 +119,7 @@ function generate_commit_message {
   check-if-git-repo
   check_env_file
   # shellcheck source=$HOME/bin/gitgpt/.env
+  # shellcheck disable=SC1091
   source "$ENV_FILE"
   check_api_key "$OPENAI_API_KEY"
   if [[ $1 == "--staged" ]]; then
@@ -176,6 +178,7 @@ commit)
   ;;
 --verify | -v)
   # shellcheck source=$HOME/bin/gitgpt/.env
+  # shellcheck disable=SC1091
   source "$ENV_FILE"
   check_api_key "$OPENAI_API_KEY"
   exit 0

@@ -14,3 +14,8 @@
   echo "Output: $output"
   [[ "${output}" =~ "gitgpt: Command not recognized." ]]  # Update to match the actual error message
 }
+
+@test "ShellCheck should pass without any errors" {
+    run shellcheck ./gitgpt
+    [ "$status" -eq 0 ]
+}
