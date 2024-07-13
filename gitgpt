@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 ENV_FILE="$(dirname "$0")/.env"
 CHECK_URL="https://api.openai.com/v1/engines"
 API_URL="https://api.openai.com/v1/chat/completions"
