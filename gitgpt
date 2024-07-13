@@ -118,7 +118,11 @@ function generate_commit_message {
   check_env_file
   source "$ENV_FILE"
   check_api_key "$OPENAI_API_KEY"
-  diff_output=$(git diff --diff-algorithm=default)
+  if [[ $1 == "--staged" ]]; then
+    diff_output=$(git diff --cached --diff-algorithm=default)
+  else
+    diff_output=$(git diff --diff-algorithm=default)
+  fi
   prompt=$'generate a commit message for those changes:\n'
   prompt+="$diff_output"
   generate-json "$prompt"
