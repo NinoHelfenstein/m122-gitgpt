@@ -12,8 +12,8 @@ function show_help {
   echo ""
   echo "Commands:"
   echo "  commit         Commit changes"
-  echo "  -a, --api          Access API"
-  echo "  -v, --verify       Verify something"
+  echo "  -a, --api          Overwrite the API key in the .env file"
+  echo "  -v, --verify       Verify API key in the .env file"
   echo ""
   echo "Run 'gitgpt <command> --help' for more information on a command."
 }

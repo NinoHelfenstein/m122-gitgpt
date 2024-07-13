@@ -156,7 +156,7 @@ Don't forget to give the project a star! Thanks again!
 [stars-url]: https://github.com/NinoHelfenstein/m122-gitgpt/stargazers
 [issues-shield]: https://img.shields.io/github/issues/NinoHelfenstein/m122-gitgpt.svg?style=for-the-badge
 [issues-url]: https://github.com/NinoHelfenstein/m122-gitgpt/issues
-[Bash]: https://img.shields.io/badge/gnubash-4EAA25?style=for-the-badge&logo=gnubash&logoColor=white
+[Bash]: https://img.shields.io/badge/bash-4EAA25?style=for-the-badge&logo=gnubash&logoColor=white
 [Bash-url]: https://www.gnu.org/software/bash/
 [OpenAi]: https://img.shields.io/badge/openai-412991?style=for-the-badge&logo=openai&logoColor=white
 [OpenAi-url]: https:openai.com
